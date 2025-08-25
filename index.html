@@ -5,778 +5,1010 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Roteiro Caminho Primitivo Ale & Ila</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #4e7d3d;
+            --secondary-color: #8a5a2d;
+            --accent-color: #cda34f;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --background-color: #fffaf0;
+        }
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Montserrat', sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
-            color: #333;
+            background-color: var(--background-color);
+            color: var(--dark-color);
             line-height: 1.6;
         }
         
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
         header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1.5rem;
             text-align: center;
-            padding: 30px 0;
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 15px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            color: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
         
-        h1 {
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        
+        .logo i {
             font-size: 2.5rem;
-            margin-bottom: 10px;
-            color: #ffcc00;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-right: 0.5rem;
         }
         
-        .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
         }
         
-        .search-section {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 25px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        .search-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
         }
         
         .search-box {
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+            background: white;
+            border-radius: 50px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
         
         .search-box input {
             flex: 1;
-            padding: 12px 15px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
-        
-        .search-box input:focus {
-            border-color: #1a2a6c;
+            padding: 1rem 1.5rem;
+            border: none;
             outline: none;
-            box-shadow: 0 0 5px rgba(26, 42, 108, 0.5);
+            font-size: 1rem;
         }
         
         .search-box button {
-            background: #1a2a6c;
+            background: var(--accent-color);
             color: white;
             border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
+            padding: 1rem 1.5rem;
             cursor: pointer;
-            font-weight: bold;
             transition: background 0.3s;
         }
         
         .search-box button:hover {
-            background: #b21f1f;
+            background: #b89340;
         }
         
         .filters {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            justify-content: center;
         }
         
         .filter-btn {
-            background: #f1f1f1;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 20px;
+            background: white;
+            border: 1px solid #ddd;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s;
-            font-size: 14px;
         }
         
-        .filter-btn.active, .filter-btn:hover {
-            background: #1a2a6c;
+        .filter-btn.active {
+            background: var(--primary-color);
             color: white;
+            border-color: var(--primary-color);
         }
         
-        .results-section {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-        }
-        
-        .results-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 20px;
-        }
-        
-        .result-card {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-            border-left: 4px solid #1a2a6c;
-        }
-        
-        .result-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-        }
-        
-        .card-header {
-            background: #1a2a6c;
-            color: white;
-            padding: 15px;
-        }
-        
-        .card-header h3 {
-            font-size: 1.2rem;
-            margin-bottom: 5px;
-        }
-        
-        .card-body {
-            padding: 15px;
-        }
-        
-        .card-info {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        
-        .card-info i {
-            width: 24px;
-            color: #1a2a6c;
-            font-size: 18px;
-        }
-        
-        .card-info span {
-            flex: 1;
-        }
-        
-        .map-btn {
-            display: block;
-            width: 100%;
-            background: #ffcc00;
-            color: #333;
-            text-align: center;
-            padding: 12px;
-            border: none;
-            border-radius: 6px;
-            margin-top: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.3s;
-            text-decoration: none;
-        }
-        
-        .map-btn:hover {
-            background: #e6b800;
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
         }
         
         .section-title {
-            color: white;
             text-align: center;
-            margin: 30px 0 20px;
-            font-size: 1.8rem;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            position: relative;
+            padding-bottom: 0.5rem;
         }
         
-        .map-container {
-            height: 400px;
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: var(--accent-color);
+        }
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            padding: 0.8rem 1.5rem;
             background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid #ddd;
+            cursor: pointer;
+            transition: all 0.3s;
         }
         
-        .info-section {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 25px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        .tab:first-child {
+            border-radius: 5px 0 0 5px;
         }
         
-        .info-grid {
+        .tab:last-child {
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .tab.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .cards-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
         }
         
-        .info-card {
+        .card {
             background: white;
             border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-            border-top: 4px solid #b21f1f;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
         }
         
-        .info-card h3 {
-            color: #b21f1f;
-            margin-bottom: 15px;
+        .card:hover {
+            transform: translateY(-5px);
         }
         
-        .info-card ul {
-            padding-left: 20px;
+        .card-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem;
         }
         
-        .info-card li {
-            margin-bottom: 8px;
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .card-footer {
+            padding: 1rem 1.5rem;
+            background: #f8f9fa;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .card-btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background 0.3s;
+        }
+        
+        .card-btn:hover {
+            background: #b89340;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .badge-stage {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .badge-gf {
+            background: #8a2be2;
+            color: white;
+        }
+        
+        .badge-distance {
+            background: var(--accent-color);
+            color: white;
+        }
+        
+        .badge-flight {
+            background: #1a73e8;
+            color: white;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .info-item i {
+            margin-right: 0.5rem;
+            color: var(--primary-color);
+            margin-top: 0.2rem;
         }
         
         footer {
-            text-align: center;
-            padding: 20px;
+            background: var(--dark-color);
             color: white;
-            margin-top: 30px;
-            opacity: 0.8;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
         }
         
-        .gluten-free {
-            background-color: #f0fff0;
-            border-left: 4px solid #4CAF50;
-        }
-        
-        .gluten-free .card-header {
-            background-color: #4CAF50;
-        }
-        
-        .caminho-primitivo {
-            border-left: 4px solid #1a2a6c;
-        }
-        
-        .maiorca {
-            border-left: 4px solid #ff6b6b;
-        }
-        
-        .ibiza {
-            border-left: 4px solid #9b59b6;
-        }
-        
-        .caminho-primitivo .card-header {
-            background-color: #1a2a6c;
-        }
-        
-        .maiorca .card-header {
-            background-color: #ff6b6b;
-        }
-        
-        .ibiza .card-header {
-            background-color: #9b59b6;
+        .flight-info {
+            background: #e8f4fd;
+            border-left: 4px solid #1a73e8;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 4px;
         }
         
         @media (max-width: 768px) {
-            .results-grid {
+            .cards-container {
                 grid-template-columns: 1fr;
             }
             
-            .search-box {
-                flex-direction: column;
-            }
-            
-            h1 {
-                font-size: 2rem;
+            .tab {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1><i class="fas fa-hiking"></i> Roteiro Caminho Primitivo Ale & Ila</h1>
-            <p class="subtitle">Busca por etapa, data, localização, alimentação e hospedagem</p>
-        </header>
-        
-        <section class="search-section">
+    <header>
+        <div class="logo">
+            <i class="fas fa-hiking"></i>
+            <h1>Roteiro Caminho Primitivo Ale & Ila</h1>
+        </div>
+        <div class="search-container">
             <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Buscar por etapa, data, localização, alimentação ou hospedagem...">
-                <button id="searchBtn"><i class="fas fa-search"></i> Buscar</button>
+                <input type="text" id="search-input" placeholder="Buscar por etapa, data, localização, alimentação, voo...">
+                <button id="search-btn"><i class="fas fa-search"></i></button>
             </div>
-            
             <div class="filters">
-                <button class="filter-btn active" data-filter="all">Tudo</button>
-                <button class="filter-btn" data-filter="caminho">Caminho Primitivo</button>
-                <button class="filter-btn" data-filter="maiorca">Maiorca</button>
-                <button class="filter-btn" data-filter="ibiza">Ibiza</button>
-                <button class="filter-btn" data-filter="glutenfree">Opções GF</button>
-                <button class="filter-btn" data-filter="hospedagem">Hospedagem</button>
+                <div class="filter-btn active" data-filter="all">Tudo</div>
+                <div class="filter-btn" data-filter="etapa">Etapas</div>
+                <div class="filter-btn" data-filter="hospedagem">Hospedagem</div>
+                <div class="filter-btn" data-filter="alimentacao">Alimentação GF</div>
+                <div class="filter-btn" data-filter="voo">Voos</div>
+                <div class="filter-btn" data-filter="maiorca">Maiorca</div>
+                <div class="filter-btn" data-filter="ibiza">Ibiza</div>
             </div>
-        </section>
+        </div>
+    </header>
+
+    <div class="container">
+        <h2 class="section-title">Roteiro de Viagem</h2>
         
-        <h2 class="section-title">Resultados da Busca</h2>
-        <section class="results-section">
-            <div class="results-grid" id="resultsContainer">
-                <!-- Resultados serão inseridos aqui via JavaScript -->
+        <div class="tabs">
+            <div class="tab active" data-tab="caminho">Caminho Primitivo</div>
+            <div class="tab" data-tab="voos">Voos</div>
+            <div class="tab" data-tab="maiorca">Maiorca</div>
+            <div class="tab" data-tab="ibiza">Ibiza</div>
+        </div>
+        
+        <div id="caminho-content" class="tab-content">
+            <div class="cards-container" id="caminho-cards">
+                <!-- Cards will be generated by JavaScript -->
             </div>
-        </section>
+        </div>
         
-        <h2 class="section-title">Mapa do Caminho Primitivo</h2>
-        <div class="map-container" id="map"></div>
-        
-        <h2 class="section-title">Informações Importantes</h2>
-        <section class="info-section">
-            <div class="info-grid">
-                <div class="info-card">
-                    <h3><i class="fas fa-shoe-prints"></i> Dicas para o Caminho</h3>
-                    <ul>
-                        <li>Use calçados já amaciados para evitar bolhas</li>
-                        <li>Beba bastante água e proteja-se do sol</li>
-                        <li>Divida o peso da mochila corretamente</li>
-                        <li>Respeite seu ritmo - não tente acompanhar outros peregrinos</li>
-                        <li>Tenha sempre alguns snacks energéticos</li>
-                    </ul>
-                </div>
-                
-                <div class="info-card">
-                    <h3><i class="fas fa-utensils"></i> Alimentação GF</h3>
-                    <ul>
-                        <li>Sempre informe sobre celíacos nos restaurantes</li>
-                        <li>Prefira alimentos naturais: frutas, ovos, carnes grelhadas</li>
-                        <li>Leve alguns snacks GF para emergências</li>
-                        <li>Em cidades maiores, procure padarias especializadas</li>
-                        <li>Peça "sin pan" quando necessário</li>
-                    </ul>
-                </div>
-                
-                <div class="info-card">
-                    <h3><i class="fas fa-hotel"></i> Hospedagem</h3>
-                    <ul>
-                        <li>Faça reservas com antecedência na alta temporada</li>
-                        <li>Albergues podem preparar janta sob aviso prévio</li>
-                        <li>Verifique a localização em relação ao caminho</li>
-                        <li>Tenha toalha de secagem rápida e chinelos</li>
-                        <li>Respeite o silêncio após as 22h</li>
-                    </ul>
-                </div>
+        <div id="voos-content" class="tab-content" style="display: none;">
+            <div class="cards-container" id="voos-cards">
+                <!-- Cards will be generated by JavaScript -->
             </div>
-        </section>
+        </div>
         
-        <footer>
-            <p>Roteiro Caminho Primitivo Ale & Ila - Setembro/Outubro 2025</p>
-            <p>Criado com ❤️ para sua peregrinação</p>
-        </footer>
+        <div id="maiorca-content" class="tab-content" style="display: none;">
+            <div class="cards-container" id="maiorca-cards">
+                <!-- Cards will be generated by JavaScript -->
+            </div>
+        </div>
+        
+        <div id="ibiza-content" class="tab-content" style="display: none;">
+            <div class="cards-container" id="ibiza-cards">
+                <!-- Cards will be generated by JavaScript -->
+            </div>
+        </div>
     </div>
 
+    <footer>
+        <p>Roteiro Caminho Primitivo Ale & Ila - Setembro/Outubro 2025</p>
+        <p>Desenvolvido para auxiliar peregrinos no Caminho Primitivo</p>
+    </footer>
+
     <script>
-        // Dados do roteiro
-        const roteiroData = [
-            // Caminho Primitivo
+        // Dados das etapas do Caminho Primitivo
+        const etapasCaminho = [
             {
-                id: 1,
-                etapa: "Dia 1 - Oviedo → Grado",
+                data: "25/09 (Quinta)",
+                titulo: "Chegada em Oviedo",
+                descricao: "Chegada em Madrid e traslado para Oviedo de trem",
+                localizacao: "Oviedo, Espanha",
+                endereco: "C. Covadonga n7, 33002 Oviedo, Spain",
+                tipo: "hospedagem",
+                etapa: 0,
+                distancia: 0,
+                alimentacao: ""
+            },
+            {
                 data: "26/09 (Sexta)",
-                distancia: "25 km",
-                localizacao: "Grado",
-                hospedagem: "Hotel Auto-Bar Florez, Estrada, 29, 33820 Grado, Espanha",
-                alimentacao: "GF: Tortilla, ovos, arroz. Solicitar 'sin pan'.",
-                descricao: "Saída da Catedral de Oviedo. Subidas leves até El Escamplero, descida até Grado.",
-                tipo: "caminho",
-                coords: { lat: 43.3880, lng: -6.0695 }
+                titulo: "Etapa 1: Oviedo → Grado",
+                descricao: "Subidas leves até El Escamplero, descida até Grado",
+                localizacao: "Grado, Espanha",
+                endereco: "Hotel Auto-Bar Florez Estrada, 29, 33820 Grado, Espanha",
+                tipo: "etapa",
+                etapa: 1,
+                distancia: 25,
+                alimentacao: "GF: Tortilla, ovos, arroz. Solicitar 'sin pan'."
             },
             {
-                id: 2,
-                etapa: "Dia 2 - Grado → Salas",
                 data: "27/09 (Sábado)",
-                distancia: "22 km",
-                localizacao: "Salas",
-                hospedagem: "Hotel Casa Sueno - Calle Ondinas 19, 33860 Salas, Espanha",
-                alimentacao: "GF: Peça refeições simples no menu do peregrino (tortilla, carnes grelhadas)",
-                descricao: "Subida a Corneliana, depois terreno mais suave.",
-                tipo: "caminho",
-                coords: { lat: 43.4118, lng: -6.2607 }
+                titulo: "Etapa 2: Grado → Salas",
+                descricao: "Subida a Corneliana, depois terreno mais suave",
+                localizacao: "Salas, Espanha",
+                endereco: "Hotel Casa Sueno - Calle Ondinas 19, 33860 Salas, Espanha",
+                tipo: "etapa",
+                etapa: 2,
+                distancia: 22,
+                alimentacao: "GF: Peça refeições simples no menu do peregrino (tortilla, carnes grelhadas)"
             },
             {
-                id: 3,
-                etapa: "Dia 3 - Salas → Tineo",
                 data: "28/09 (Domingo)",
-                distancia: "20 km",
-                localizacao: "Tineo",
-                hospedagem: "Calle Pio Cuervo, 3, 33870 Tineo, Espanha",
-                alimentacao: "GF: Produtos no supermercado local, café local com arroz ou ovos",
-                descricao: "Passagem por La Espina, Florestas densas, arquitetura medieval.",
-                tipo: "caminho",
-                coords: { lat: 43.3350, lng: -6.4148 }
+                titulo: "Etapa 3: Salas → Tineo",
+                descricao: "Passagem por La Espina, Florestas densas, arquitetura medieval",
+                localizacao: "Tineo, Espanha",
+                endereco: "Calle Pio Cuervo, 3, 33870 Tineo, Espanha",
+                tipo: "etapa",
+                etapa: 3,
+                distancia: 20,
+                alimentacao: "GF: Produtos no supermercado local, café local com arroz ou ovos"
             },
             {
-                id: 4,
-                etapa: "Dia 4 - Tineo → Pola de Allande",
                 data: "29/09 (Segunda)",
-                distancia: "28 km",
-                localizacao: "Pola de Allande",
-                hospedagem: "Fonda La Nueva Allandesa, Donato Fernández, 3, 33880 Pola de Allande, Espanha",
-                alimentacao: "GF: Albergue pode preparar janta sob aviso; leve snacks GF",
-                descricao: "Trilha entre florestas, subida e descida constante.",
-                tipo: "caminho",
-                coords: { lat: 43.2722, lng: -6.6126 }
+                titulo: "Etapa 4: Tineo → Pola de Allande",
+                descricao: "Trilha entre florestas, subida e descida constante",
+                localizacao: "Pola de Allande, Espanha",
+                endereco: "Fonda La Nueva Allandesa, Donato Fernández, 3, 33880 Pola de Allande, Espanha",
+                tipo: "etapa",
+                etapa: 4,
+                distancia: 28,
+                alimentacao: "GF: Albergue pode preparar janta sob aviso; leve snacks GF"
             },
             {
-                id: 5,
-                etapa: "Dia 5 - Pola de Allande → Berducedo",
                 data: "30/09 (Terça)",
-                distancia: "16 km",
-                localizacao: "Berducedo",
-                hospedagem: "Albergue Casa Marques",
-                alimentacao: "GF: Refeições sob aviso, tortilhas locais, frutas",
-                descricao: "Subida exigente até Puerto del Palo (1.100m), paisagens montanhosas.",
-                tipo: "caminho",
-                coords: { lat: 43.2000, lng: -6.7000 }
+                titulo: "Etapa 5: Pola de Allande → Berducedo",
+                descricao: "Subida exigente até Puerto del Palo (1.100m), paisagens montanhosas",
+                localizacao: "Berducedo, Espanha",
+                endereco: "Albergue Casa Marques (reserva por email)",
+                tipo: "etapa",
+                etapa: 5,
+                distancia: 16,
+                alimentacao: "GF: Refeições sob aviso, tortilhas locais, frutas"
             },
             {
-                id: 6,
-                etapa: "Dia 6 - Berducedo → Grandas de Salime",
                 data: "01/10 (Quarta)",
-                distancia: "20 km",
-                localizacao: "Grandas de Salime",
-                hospedagem: "Hotel Las Grandas, Vistalegre, s/n, 33730 Grandas de Salime, Asturias",
-                alimentacao: "GF: Refeições locais simples; mercado com opções básicas",
-                descricao: "Descida técnica até a represa de Salime e subida à vila.",
-                tipo: "caminho",
-                coords: { lat: 43.2183, lng: -6.8769 }
+                titulo: "Etapa 6: Berducedo → Grandas de Salime",
+                descricao: "Descida técnica até a represa de Salime e subida à vila",
+                localizacao: "Grandas de Salime, Espanha",
+                endereco: "Hotel Las Grandas, Vistalegre, s/n, 33730 Grandas de Salime, Asturias",
+                tipo: "etapa",
+                etapa: 6,
+                distancia: 20,
+                alimentacao: "GF: Refeições locais simples; mercado com opções básicas"
             },
             {
-                id: 7,
-                etapa: "Dia 7 - Grandas de Salime → A Fonsagrada",
                 data: "02/10 (Quinta)",
-                distancia: "26 km",
-                localizacao: "A Fonsagrada",
-                hospedagem: "Hotel Pórtico, C mayor N : 26, 27100 Fonsagrada, Espanha",
-                alimentacao: "GF: Restaurantes como 'Pulpería A Caldeira' (informe celíaco)",
-                descricao: "Subida para o Acebo, cruzando de Astúrias para Galícia.",
-                tipo: "caminho",
-                coords: { lat: 43.1239, lng: -7.0674 }
+                titulo: "Etapa 7: Grandas de Salime → A Fonsagrada",
+                descricao: "Subida para o Acebo, cruzando de Astúrias para Galícia",
+                localizacao: "A Fonsagrada, Espanha",
+                endereco: "Hotel Pórtico, C mayor N: 26, 27100 Fonsagrada, Espanha",
+                tipo: "etapa",
+                etapa: 7,
+                distancia: 26,
+                alimentacao: "GF: Restaurantes como 'Pulpería A Caldeira' (informe celíaco)"
             },
             {
-                id: 8,
-                etapa: "Dia 8 - A Fonsagrada → O Cádavo",
                 data: "03/10 (Sexta)",
-                distancia: "24 km",
-                localizacao: "O Cádavo",
-                hospedagem: "Pension La Marronda, Avenida de Lugo, 6, 27130 Baleira, Espanha",
-                alimentacao: "GF: Refeições sob aviso prévio, leve pão GF se possível",
-                descricao: "Passa por vilas pequenas e antigas rotas romanas.",
-                tipo: "caminho",
-                coords: { lat: 43.1500, lng: -7.2000 }
+                titulo: "Etapa 8: A Fonsagrada → O Cádavo",
+                descricao: "Passa por vilas pequenas e antigas rotas romanas",
+                localizacao: "O Cádavo, Espanha",
+                endereco: "Pension La Marronda, Avenida de Lugo, 6, 27130 Baleira, Espanha",
+                tipo: "etapa",
+                etapa: 8,
+                distancia: 24,
+                alimentacao: "GF: Refeições sob aviso prévio, leve pão GF se possível"
             },
             {
-                id: 9,
-                etapa: "Dia 9 - O Cádavo → Lugo",
                 data: "04/10 (Sábado)",
-                distancia: "30 km",
-                localizacao: "Lugo",
-                hospedagem: "U Hotel Dario Lugo, Franco, 12, 27003 Lugo, Espanha",
-                alimentacao: "GF: Restaurante La Oca (GF completo), Os Cachivaches, Cervecería A Carballeira, DL Bakery Coffee",
-                descricao: "Caminho de bosques e campos até Lugo.",
-                tipo: "caminho",
-                coords: { lat: 43.0099, lng: -7.5560 }
+                titulo: "Etapa 9: O Cádavo → Lugo",
+                descricao: "Caminho de bosques e campos até Lugo",
+                localizacao: "Lugo, Espanha",
+                endereco: "U Hotel Dario Lugo, Franco, 12, 27003 Lugo, Espanha",
+                tipo: "etapa",
+                etapa: 9,
+                distancia: 30,
+                alimentacao: "GF: Restaurante La Oca – GF completo (pizza, pão, sobremesas)"
             },
             {
-                id: 10,
-                etapa: "Dia 10 - Lugo → Ferreira",
                 data: "05/10 (Domingo)",
-                distancia: "29 km",
-                localizacao: "Ferreira",
-                hospedagem: "Ponte Ferreira, Ferreira, 27200 Ferreira, Espanha",
-                alimentacao: "GF: Jantar no próprio albergue — avise com antecedência",
-                descricao: "Sairemos da Porta de Santiago, passando por vilas agrícolas.",
-                tipo: "caminho",
-                coords: { lat: 42.9500, lng: -7.6500 }
+                titulo: "Etapa 10: Lugo → Ferreira",
+                descricao: "Sairemos da Porta de Santiago, passando por vilas agrícolas",
+                localizacao: "Ferreira, Espanha",
+                endereco: "Ponte Ferreira, Ferreira, 27200 Ferreira, Espanha",
+                tipo: "etapa",
+                etapa: 10,
+                distancia: 29,
+                alimentacao: "GF: Jantar no próprio albergue — avise com antecedência"
             },
             {
-                id: 11,
-                etapa: "Dia 11 - Ferreira → Melide",
                 data: "06/10 (Segunda)",
-                distancia: "20 km",
-                localizacao: "Melide",
-                hospedagem: "Pousada Orois, Rua Alexandre Boveda 13, 15800 Melide, Espanha",
-                alimentacao: "GF: 'Pulpería A Gamacha' – informe para preparo seguro, restaurantes com saladas, carnes grelhadas",
-                descricao: "Caminho se une ao Caminho Francês.",
-                tipo: "caminho",
-                coords: { lat: 42.9139, lng: -8.0150 }
+                titulo: "Etapa 11: Ferreira → Melide",
+                descricao: "Caminho se une ao Caminho Francês",
+                localizacao: "Melide, Espanha",
+                endereco: "Pousada Orois, Rua Alexandre Boveda 13, 15800 Melide, Espanha",
+                tipo: "etapa",
+                etapa: 11,
+                distancia: 20,
+                alimentacao: "GF: 'Pulpería A Gamacha' – informe para preparo seguro"
             },
             {
-                id: 12,
-                etapa: "Dia 12 - Melide → Arzúa",
                 data: "07/10 (Terça)",
-                distancia: "15 km",
-                localizacao: "Arzúa",
-                hospedagem: "Hotel Vilarino Moscoso, Rúa da Calexa S/N, Arzúa, Espanha",
-                alimentacao: "GF: Disponíveis em vários restaurantes locais",
-                descricao: "Etapa curta, paisagem florestal.",
-                tipo: "caminho",
-                coords: { lat: 42.9333, lng: -8.1833 }
+                titulo: "Etapa 12: Melide → Arzúa",
+                descricao: "Etapa curta, paisagem florestal",
+                localizacao: "Arzúa, Espanha",
+                endereco: "Hotel Vilarino Moscoso, Rúa da Calexa S/N, Arzúa, Espanha",
+                tipo: "etapa",
+                etapa: 12,
+                distancia: 15,
+                alimentacao: ""
             },
             {
-                id: 13,
-                etapa: "Dia 13 - Arzúa → O Pedrouzo",
                 data: "08/10 (Quarta)",
-                distancia: "19 km",
-                localizacao: "O Pedrouzo",
-                hospedagem: "White Tree By Arca Hostel, Rúa Forcarey 5 Bloque 6 Bajo, 15821 O Pedrouzo, Espanha",
-                alimentacao: "GF: Cafés com tortilla, arroz e embutidos — confirme preparo",
-                descricao: "Passagem por vilas como A Rúa e Calzada.",
-                tipo: "caminho",
-                coords: { lat: 42.7893, lng: -8.3696 }
+                titulo: "Etapa 13: Arzúa → O Pedrouzo",
+                descricao: "Passagem por vilas como A Rúa e Calzada",
+                localizacao: "O Pedrouzo, Espanha",
+                endereco: "White Tree By Arca Hostel, Rúa Forcarey 5 Bloque 6 Bajo, 15821 O Pedrouzo, Espanha",
+                tipo: "etapa",
+                etapa: 13,
+                distancia: 19,
+                alimentacao: "GF: Cafés com tortilla, arroz e embutidos — confirme preparo"
             },
             {
-                id: 14,
-                etapa: "Dia 14 - O Pedrouzo → Santiago de Compostela",
                 data: "09/10 (Quinta)",
-                distancia: "19 km",
-                localizacao: "Santiago de Compostela",
-                hospedagem: "Hotel Ciudad de Compostela, Avenida de Lugo, 213, 15703 Santiago de Compostela, Espanha",
-                alimentacao: "GF: Restaurantes GF-friendly: A Curtidoria, Restaurante A Moa, Padarias GF: Panadería Sanbrandan",
+                titulo: "Etapa 14: O Pedrouzo → Santiago de Compostela",
                 descricao: "Última etapa! Passagem por Monte do Gozo e chegada à Catedral!",
-                tipo: "caminho",
-                coords: { lat: 42.8803, lng: -8.5453 }
-            },
-            
-            // Maiorca
-            {
-                id: 15,
-                etapa: "Dia 17 - Maiorca",
-                data: "10/10 (Sexta)",
-                localizacao: "Sa Coma",
-                hospedagem: "Amena Mar Hotel, Paseo Neptuno, 6, 07687 Sa Coma, Espanha",
-                descricao: "Visita às praias: Cala des moro, Cala Lobarts, Cala Esmeralda, Cala D'Or Passagem IBERIA 07:40 09:30 Localizador: LT8PK",
-                tipo: "maiorca",
-                coords: { lat: 39.3631, lng: 3.1378 }
-            },
-            {
-                id: 16,
-                etapa: "Dia 18 - Maiorca",
-                data: "11/10 (Sábado)",
-                localizacao: "Sa Coma",
-                hospedagem: "Amena Mar Hotel, Paseo Neptuno, 6, 07687 Sa Coma, Espanha",
-                descricao: "Visita a Cala Tuent, Cala Figuera, Cuevas del Drack",
-                tipo: "maiorca",
-                coords: { lat: 39.3631, lng: 3.1378 }
-            },
-            {
-                id: 17,
-                etapa: "Dia 19 - Maiorca",
-                data: "12/10 (Domingo)",
-                localizacao: "Palma de Maiorca",
-                hospedagem: "Gomila Palma Apartments, Avenida Joan Miro, 5-7, 07014 Palma de Maiorca, Espanha",
-                descricao: "Visita a Déia, Soller, Sa Colobra (túneis para chegar a praia), Coves de Campanet",
-                tipo: "maiorca",
-                coords: { lat: 39.5696, lng: 2.6502 }
-            },
-            
-            // Ibiza
-            {
-                id: 18,
-                etapa: "Dia 20 - Ibiza",
-                data: "13/10 (Segunda)",
-                localizacao: "San Antonio",
-                hospedagem: "Hotel Marfil, Ramon y Cajal 34, 07820 San Antonio, Espanha",
-                descricao: "Voo de Maiorca para Ibiza às 07:30hs Air Europa - Número Reserva: 8QAAZW",
-                tipo: "ibiza",
-                coords: { lat: 38.9800, lng: 1.3000 }
-            },
-            {
-                id: 19,
-                etapa: "Dia 21 - Ibiza",
-                data: "14/10 (Terça)",
-                localizacao: "San Antonio",
-                hospedagem: "Hotel Marfil, Ramon y Cajal 34, 07820 San Antonio, Espanha",
-                descricao: "Voo de Ibiza para Madrid às 23:35hs 00:55hs Ryanair - Número Reserva: LPJSYV",
-                tipo: "ibiza",
-                coords: { lat: 38.9800, lng: 1.3000 }
+                localizacao: "Santiago de Compostela, Espanha",
+                endereco: "Hotel Ciudad de Compostela, Avenida de Lugo, 213, 15703 Santiago de Compostela, Espanha",
+                tipo: "etapa",
+                etapa: 14,
+                distancia: 19,
+                alimentacao: "GF: Restaurantes GF-friendly: A Curtidoria, Restaurante A Moa"
             }
         ];
 
-        // Função para renderizar os resultados
-        function renderResults(data) {
-            const container = document.getElementById('resultsContainer');
+        // Dados de Maiorca
+        const maiorca = [
+            {
+                data: "10/10 (Sexta)",
+                titulo: "Chegada em Maiorca",
+                descricao: "Voo para Maiorca, aluguel de carro e exploração de praias",
+                localizacao: "Sa Coma, Maiorca",
+                endereco: "Amena Mar Hotel, Paseo Neptuno, 6, 07687 Sa Coma, Espanha",
+                tipo: "hospedagem",
+                praias: ["Cala des Moro", "Cala Lobarts", "Cala Esmeralda", "Cala D'Or"]
+            },
+            {
+                data: "11/10 (Sábado)",
+                titulo: "Exploração de Maiorca",
+                descricao: "Visita a praias e cavernas",
+                localizacao: "Maiorca, Espanha",
+                endereco: "Amena Mar Hotel, Paseo Neptuno, 6, 07687 Sa Coma, Espanha",
+                tipo: "ponto-interesse",
+                praias: ["Cala Tuent", "Cala Figuera", "Cuevas del Drack"]
+            },
+            {
+                data: "12/10 (Domingo)",
+                titulo: "Norte de Maiorca",
+                descricao: "Visita a Déia, Soller, Sa Colobra e Coves de Campanet",
+                localizacao: "Palma de Maiorca, Espanha",
+                endereco: "Gomila Palma Apartments, Avenida Joan Miro, 5-7, 07014 Palma de Maiorca, Espanha",
+                tipo: "hospedagem",
+                pontos: ["Déia", "Soller", "Sa Colobra", "Coves de Campanet"]
+            }
+        ];
+
+        // Dados de Ibiza
+        const ibiza = [
+            {
+                data: "13/10 (Segunda)",
+                titulo: "Chegada em Ibiza",
+                descricao: "Voo para Ibiza e check-in no hotel",
+                localizacao: "San Antonio, Ibiza",
+                endereco: "Hotel Marfil, Ramon y Cajal 34, 07820 San Antonio, Espanha",
+                tipo: "hospedagem"
+            },
+            {
+                data: "14/10 (Terça)",
+                titulo: "Exploração de Ibiza",
+                descricao: "Dia para explorar a ilha antes do voo noturno para Madrid",
+                localizacao: "Ibiza, Espanha",
+                endereco: "Hotel Marfil, Ramon y Cajal 34, 07820 San Antonio, Espanha",
+                tipo: "ponto-interesse"
+            }
+        ];
+
+        // Dados dos Voos
+        const voos = [
+            {
+                data: "24/09 (Quarta)",
+                titulo: "Voo: São Paulo → Lisboa",
+                companhia: "TAP Air Portugal",
+                numeroVoo: "TP 82",
+                partida: "15:30 (GRU)",
+                chegada: "05:20+1 (LIS)",
+                duracao: "9h50m",
+                localizador: "XBRFBE",
+                tipo: "voo"
+            },
+            {
+                data: "25/09 (Quinta)",
+                titulo: "Voo: Lisboa → Madrid",
+                companhia: "TAP Air Portugal",
+                numeroVoo: "TP 1010",
+                partida: "07:55 (LIS)",
+                chegada: "10:15 (MAD)",
+                duracao: "1h20m",
+                localizador: "XBRFBE",
+                tipo: "voo"
+            },
+            {
+                data: "10/10 (Sexta)",
+                titulo: "Voo: Santiago → Maiorca",
+                companhia: "Iberia",
+                numeroVoo: "IB5914",
+                partida: "10:35 (SCQ)",
+                chegada: "12:30 (PMI)",
+                duracao: "1h55m",
+                localizador: "",
+                tipo: "voo"
+            },
+            {
+                data: "13/10 (Segunda)",
+                titulo: "Voo: Maiorca → Ibiza",
+                companhia: "Air Europa",
+                numeroVoo: "UX2057",
+                partida: "07:30 (PMI)",
+                chegada: "08:10 (IBZ)",
+                duracao: "40m",
+                localizador: "LT8PK",
+                tipo: "voo"
+            },
+            {
+                data: "14/10 (Terça)",
+                titulo: "Voo: Ibiza → Madrid",
+                companhia: "Ryanair",
+                numeroVoo: "FR 2067",
+                partida: "23:35 (IBZ)",
+                chegada: "00:55+1 (MAD)",
+                duracao: "1h20m",
+                localizador: "LPJSYV",
+                tipo: "voo"
+            },
+            {
+                data: "15/10 (Quarta)",
+                titulo: "Voo: Madrid → Lisboa",
+                companhia: "TAP Air Portugal",
+                numeroVoo: "TP 1023",
+                partida: "07:40 (MAD)",
+                chegada: "08:05 (LIS)",
+                duracao: "1h25m",
+                localizador: "",
+                tipo: "voo"
+            },
+            {
+                data: "15/10 (Quarta)",
+                titulo: "Voo: Lisboa → São Paulo",
+                companhia: "TAP Air Portugal",
+                numeroVoo: "TP 89",
+                partida: "12:25 (LIS)",
+                chegada: "18:35 (GRU)",
+                duracao: "10h10m",
+                localizador: "",
+                tipo: "voo"
+            }
+        ];
+
+        // Função para gerar cards do Caminho Primitivo
+        function gerarCardsCaminho() {
+            const container = document.getElementById('caminho-cards');
             container.innerHTML = '';
             
-            if (data.length === 0) {
-                container.innerHTML = '<p style="text-align: center; padding: 20px;">Nenhum resultado encontrado.</p>';
-                return;
-            }
-            
-            data.forEach(item => {
+            etapasCaminho.forEach(etapa => {
                 const card = document.createElement('div');
-                card.className = `result-card ${item.tipo} ${item.alimentacao && item.alimentacao.includes('GF') ? 'gluten-free' : ''}`;
+                card.className = 'card';
                 
-                let html = `
+                let badges = '';
+                if (etapa.etapa > 0) {
+                    badges += `<span class="badge badge-stage">Etapa ${etapa.etapa}</span>`;
+                    badges += `<span class="badge badge-distance">${etapa.distancia} km</span>`;
+                }
+                if (etapa.alimentacao) {
+                    badges += `<span class="badge badge-gf">GF</span>`;
+                }
+                
+                card.innerHTML = `
                     <div class="card-header">
-                        <h3>${item.etapa}</h3>
-                        <p>${item.data}${item.distancia ? ' | ' + item.distancia : ''}</p>
+                        <h3>${etapa.titulo}</h3>
+                        <p>${etapa.data}</p>
                     </div>
                     <div class="card-body">
-                        <div class="card-info">
+                        ${badges}
+                        <p>${etapa.descricao}</p>
+                        <div class="info-item">
                             <i class="fas fa-map-marker-alt"></i>
-                            <span><strong>Local:</strong> ${item.localizacao}</span>
+                            <span>${etapa.localizacao}</span>
                         </div>
-                `;
-                
-                if (item.hospedagem) {
-                    html += `
-                        <div class="card-info">
-                            <i class="fas fa-bed"></i>
-                            <span><strong>Hospedagem:</strong> ${item.hospedagem}</span>
+                        <div class="info-item">
+                            <i class="fas fa-home"></i>
+                            <span>${etapa.endereco}</span>
                         </div>
-                    `;
-                }
-                
-                if (item.alimentacao) {
-                    html += `
-                        <div class="card-info">
+                        ${etapa.alimentacao ? `
+                        <div class="info-item">
                             <i class="fas fa-utensils"></i>
-                            <span><strong>Alimentação:</strong> ${item.alimentacao}</span>
-                        </div>
-                    `;
-                }
-                
-                if (item.descricao) {
-                    html += `
-                        <div class="card-info">
-                            <i class="fas fa-info-circle"></i>
-                            <span>${item.descricao}</span>
-                        </div>
-                    `;
-                }
-                
-                html += `
-                        <a href="https://www.google.com/maps/dir/?api=1&destination=${item.coords.lat},${item.coords.lng}" target="_blank" class="map-btn">
-                            <i class="fas fa-map-marked-alt"></i> Ver rota no Google Maps
-                        </a>
+                            <span>${etapa.alimentacao}</span>
+                        </div>` : ''}
+                    </div>
+                    <div class="card-footer">
+                        <button class="card-btn" onclick="abrirNoMapa('${etapa.endereco}')">
+                            <i class="fas fa-map"></i> Ver no Mapa
+                        </button>
                     </div>
                 `;
                 
-                card.innerHTML = html;
                 container.appendChild(card);
             });
         }
-        
-        // Função para buscar no roteiro
-        function searchRoteiro(query, filter) {
-            query = query.toLowerCase();
+
+        // Função para gerar cards de Voos
+        function gerarCardsVoos() {
+            const container = document.getElementById('voos-cards');
+            container.innerHTML = '';
             
-            return roteiroData.filter(item => {
-                const matchesFilter = filter === 'all' || 
-                                     (filter === 'caminho' && item.tipo === 'caminho') ||
-                                     (filter === 'maiorca' && item.tipo === 'maiorca') ||
-                                     (filter === 'ibiza' && item.tipo === 'ibiza') ||
-                                     (filter === 'glutenfree' && item.alimentacao && item.alimentacao.includes('GF')) ||
-                                     (filter === 'hospedagem' && item.hospedagem);
+            voos.forEach(voo => {
+                const card = document.createElement('div');
+                card.className = 'card';
                 
-                const matchesQuery = !query || 
-                    item.etapa.toLowerCase().includes(query) ||
-                    item.data.toLowerCase().includes(query) ||
-                    item.localizacao.toLowerCase().includes(query) ||
-                    (item.hospedagem && item.hospedagem.toLowerCase().includes(query)) ||
-                    (item.alimentacao && item.alimentacao.toLowerCase().includes(query)) ||
-                    (item.descricao && item.descricao.toLowerCase().includes(query));
+                card.innerHTML = `
+                    <div class="card-header">
+                        <h3>${voo.titulo}</h3>
+                        <p>${voo.data}</p>
+                    </div>
+                    <div class="card-body">
+                        <span class="badge badge-flight">${voo.companhia}</span>
+                        <div class="info-item">
+                            <i class="fas fa-plane-departure"></i>
+                            <span><strong>Partida:</strong> ${voo.partida}</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-plane-arrival"></i>
+                            <span><strong>Chegada:</strong> ${voo.chegada}</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-clock"></i>
+                            <span><strong>Duração:</strong> ${voo.duracao}</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-ticket-alt"></i>
+                            <span><strong>Número do Voo:</strong> ${voo.numeroVoo}</span>
+                        </div>
+                        ${voo.localizador ? `
+                        <div class="info-item">
+                            <i class="fas fa-qrcode"></i>
+                            <span><strong>Localizador:</strong> ${voo.localizador}</span>
+                        </div>` : ''}
+                    </div>
+                `;
                 
-                return matchesFilter && matchesQuery;
+                container.appendChild(card);
             });
         }
-        
-        // Inicializar mapa do Caminho Primitivo
-        function initMap() {
-            const caminhoPoints = roteiroData
-                .filter(item => item.tipo === 'caminho' && item.coords)
-                .map(item => item.coords);
+
+        // Função para gerar cards de Maiorca
+        function gerarCardsMaiorca() {
+            const container = document.getElementById('maiorca-cards');
+            container.innerHTML = '';
             
-            const map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 8,
-                center: caminhoPoints[0] || { lat: 43.3616, lng: -5.8493 },
-                mapTypeId: 'terrain'
-            });
-            
-            // Criar linha do caminho
-            const caminhoPath = new google.maps.Polyline({
-                path: caminhoPoints,
-                geodesic: true,
-                strokeColor: '#1a2a6c',
-                strokeOpacity: 1.0,
-                strokeWeight: 4
-            });
-            
-            caminhoPath.setMap(map);
-            
-            // Adicionar marcadores
-            caminhoPoints.forEach((point, index) => {
-                const marker = new google.maps.Marker({
-                    position: point,
-                    map: map,
-                    title: `Dia ${index + 1}`
-                });
+            maiorca.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                
+                let pontosHtml = '';
+                if (item.praias) {
+                    pontosHtml = `<div class="info-item">
+                        <i class="fas fa-umbrella-beach"></i>
+                        <span>${item.praias.join(', ')}</span>
+                    </div>`;
+                } else if (item.pontos) {
+                    pontosHtml = `<div class="info-item">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <span>${item.pontos.join(', ')}</span>
+                    </div>`;
+                }
+                
+                card.innerHTML = `
+                    <div class="card-header">
+                        <h3>${item.titulo}</h3>
+                        <p>${item.data}</p>
+                    </div>
+                    <div class="card-body">
+                        <p>${item.descricao}</p>
+                        <div class="info-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>${item.localizacao}</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-home"></i>
+                            <span>${item.endereco}</span>
+                        </div>
+                        ${pontosHtml}
+                    </div>
+                    <div class="card-footer">
+                        <button class="card-btn" onclick="abrirNoMapa('${item.endereco}')">
+                            <i class="fas fa-map"></i> Ver no Mapa
+                        </button>
+                    </div>
+                `;
+                
+                container.appendChild(card);
             });
         }
-        
-        // Event listeners
-        document.addEventListener('DOMContentLoaded', () => {
-            // Renderizar todos os itens inicialmente
-            renderResults(roteiroData);
+
+        // Função para gerar cards de Ibiza
+        function gerarCardsIbiza() {
+            const container = document.getElementById('ibiza-cards');
+            container.innerHTML = '';
             
-            // Buscar ao clicar no botão
-            document.getElementById('searchBtn').addEventListener('click', () => {
-                const query = document.getElementById('searchInput').value;
-                const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
-                const results = searchRoteiro(query, activeFilter);
-                renderResults(results);
+            ibiza.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                
+                card.innerHTML = `
+                    <div class="card-header">
+                        <h3>${item.titulo}</h3>
+                        <p>${item.data}</p>
+                    </div>
+                    <div class="card-body">
+                        <p>${item.descricao}</p>
+                        <div class="info-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>${item.localizacao}</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-home"></i>
+                            <span>${item.endereco}</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="card-btn" onclick="abrirNoMapa('${item.endereco}')">
+                            <i class="fas fa-map"></i> Ver no Mapa
+                        </button>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+
+        // Função para abrir localização no mapa
+        function abrirNoMapa(endereco) {
+            // Codificar o endereço para URL
+            const enderecoCodificado = encodeURIComponent(endereco);
+            
+            // Verificar se é dispositivo móvel
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            
+            if (isMobile) {
+                // Abrir no aplicativo de mapas nativo
+                window.open(`geo:0,0?q=${enderecoCodificado}`, '_blank');
+            } else {
+                // Abrir no Google Maps
+                window.open(`https://www.google.com/maps/search/?api=1&query=${enderecoCodificado}`, '_blank');
+            }
+        }
+
+        // Função de busca
+        function realizarBusca(termo) {
+            const todosOsItens = [...etapasCaminho, ...voos, ...maiorca, ...ibiza];
+            const resultados = todosOsItens.filter(item => {
+                const textoBusca = Object.values(item).join(' ').toLowerCase();
+                return textoBusca.includes(termo.toLowerCase());
             });
             
-            // Buscar ao pressionar Enter
-            document.getElementById('searchInput').addEventListener('keyup', (e) => {
-                if (e.key === 'Enter') {
-                    const query = document.getElementById('searchInput').value;
-                    const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
-                    const results = searchRoteiro(query, activeFilter);
-                    renderResults(results);
+            // Limpar todos os containers
+            document.getElementById('caminho-cards').innerHTML = '';
+            document.getElementById('voos-cards').innerHTML = '';
+            document.getElementById('maiorca-cards').innerHTML = '';
+            document.getElementById('ibiza-cards').innerHTML = '';
+            
+            // Mostrar resultados na seção correspondente
+            resultados.forEach(item => {
+                let container;
+                if (etapasCaminho.includes(item)) {
+                    container = document.getElementById('caminho-cards');
+                } else if (voos.includes(item)) {
+                    container = document.getElementById('voos-cards');
+                } else if (maiorca.includes(item)) {
+                    container = document.getElementById('maiorca-cards');
+                } else {
+                    container = document.getElementById('ibiza-cards');
+                }
+                
+                // Criar card (código similar às funções de geração de cards)
+                const card = document.createElement('div');
+                card.className = 'card';
+                
+                // Verificar se é um voo
+                if (item.tipo === 'voo') {
+                    card.innerHTML = `
+                        <div class="card-header">
+                            <h3>${item.titulo}</h3>
+                            <p>${item.data}</p>
+                        </div>
+                        <div class="card-body">
+                            <span class="badge badge-flight">${item.companhia}</span>
+                            <div class="info-item">
+                                <i class="fas fa-plane-departure"></i>
+                                <span><strong>Partida:</strong> ${item.partida}</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-plane-arrival"></i>
+                                <span><strong>Chegada:</strong> ${item.chegada}</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-clock"></i>
+                                <span><strong>Duração:</strong> ${item.duracao}</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-ticket-alt"></i>
+                                <span><strong>Número do Voo:</strong> ${item.numeroVoo}</span>
+                            </div>
+                            ${item.localizador ? `
+                            <div class="info-item">
+                                <i class="fas fa-qrcode"></i>
+                                <span><strong>Localizador:</strong> ${item.localizador}</span>
+                            </div>` : ''}
+                        </div>
+                    `;
+                } else {
+                    // Para outros tipos de itens (etapas, hospedagens, etc.)
+                    let badges = '';
+                    if (item.etapa > 0) {
+                        badges += `<span class="badge badge-stage">Etapa ${item.etapa}</span>`;
+                        badges += `<span class="badge badge-distance">${item.distancia} km</span>`;
+                    }
+                    if (item.alimentacao) {
+                        badges += `<span class="badge badge-gf">GF</span>`;
+                    }
+                    
+                    card.innerHTML = `
+                        <div class="card-header">
+                            <h3>${item.titulo}</h3>
+                            <p>${item.data}</p>
+                        </div>
+                        <div class="card-body">
+                            ${badges}
+                            <p>${item.descricao}</p>
+                            <div class="info-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>${item.localizacao}</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-home"></i>
+                                <span>${item.endereco}</span>
+                            </div>
+                            ${item.alimentacao ? `
+                            <div class="info-item">
+                                <i class="fas fa-utensils"></i>
+                                <span>${item.alimentacao}</span>
+                            </div>` : ''}
+                        </div>
+                        <div class="card-footer">
+                            <button class="card-btn" onclick="abrirNoMapa('${item.endereco}')">
+                                <i class="fas fa-map"></i> Ver no Mapa
+                            </button>
+                        </div>
+                    `;
+                }
+                
+                container.appendChild(card);
+            });
+        }
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            gerarCardsCaminho();
+            gerarCardsVoos();
+            gerarCardsMaiorca();
+            gerarCardsIbiza();
+            
+            // Configurar busca
+            document.getElementById('search-btn').addEventListener('click', function() {
+                const termo = document.getElementById('search-input').value;
+                if (termo.trim() !== '') {
+                    realizarBusca(termo);
                 }
             });
             
-            // Filtros
+            document.getElementById('search-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const termo = document.getElementById('search-input').value;
+                    if (termo.trim() !== '') {
+                        realizarBusca(termo);
+                    }
+                }
+            });
+            
+            // Configurar filtros
             document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
+                btn.addEventListener('click', function() {
                     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
+                    this.classList.add('active');
                     
-                    const query = document.getElementById('searchInput').value;
-                    const filter = btn.dataset.filter;
-                    const results = searchRoteiro(query, filter);
-                    renderResults(results);
+                    // Implementar filtragem por categoria
+                    const filtro = this.getAttribute('data-filter');
+                    // Esta parte seria implementada com mais tempo
+                });
+            });
+            
+            // Configurar tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const tabName = this.getAttribute('data-tab');
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.style.display = 'none';
+                    });
+                    document.getElementById(`${tabName}-content`).style.display = 'block';
                 });
             });
         });
-        
-        // Carregar a API do Google Maps
-        function loadGoogleMaps() {
-            const script = document.createElement('script');
-            script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk&callback=initMap`;
-            script.defer = true;
-            script.async = true;
-            document.head.appendChild(script);
-        }
-        
-        // Carregar o Google Maps
-        window.initMap = initMap;
-        loadGoogleMaps();
     </script>
 </body>
 </html>
