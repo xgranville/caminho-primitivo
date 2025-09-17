@@ -20,6 +20,8 @@
             --filter-active-text: #ffffff;
             --filter-text: #5a5a5a;
             --filter-shadow: rgba(78, 125, 61, 0.2);
+            --payment-color: #e67e22;
+            --warning-color: #e74c3c;
         }
         
         * {
@@ -95,7 +97,7 @@
             background: #b89340;
         }
         
-        /* NOVO ESTILO PARA OS FILTROS */
+        /* ESTILO PARA OS FILTROS */
         .filters-container {
             margin-top: 1.5rem;
             width: 100%;
@@ -161,7 +163,7 @@
             font-size: 0.9rem;
         }
         
-        /* FIM DO NOVO ESTILO PARA FILTROS */
+        /* FIM DO ESTILO PARA FILTROS */
         
         .container {
             max-width: 1200px;
@@ -331,6 +333,16 @@
             color: white;
         }
         
+        .badge-payment {
+            background: var(--payment-color);
+            color: white;
+        }
+        
+        .badge-warning {
+            background: var(--warning-color);
+            color: white;
+        }
+        
         .info-item {
             display: flex;
             align-items: flex-start;
@@ -341,6 +353,14 @@
             margin-right: 0.5rem;
             color: var(--primary-color);
             margin-top: 0.2rem;
+        }
+        
+        .payment-item i {
+            color: var(--payment-color);
+        }
+        
+        .warning-item i {
+            color: var(--warning-color);
         }
         
         .car-rental .info-item i {
@@ -538,7 +558,7 @@
                     <ul>
                         <li>Digite qualquer termo como nome de cidade, data, tipo de comida, etc.</li>
                         <li>Use os botões de filtro para restringir sua busca a categorias específicas</li>
-                        <li>Pressione Enter ou clique no botão de busca para executar a pesquisa</li>
+                        <li>Pressione Enter или clique no botão de busca para executar a pesquisa</li>
                     </ul>
                 </div>
                 
@@ -637,7 +657,8 @@
                 tipo: "etapa",
                 etapa: 1,
                 distancia: 25,
-                alimentacao: "GF: Tortilla, ovos, arroz. Solicitar 'sin pan'."
+                alimentacao: "GF: Tortilla, ovos, arroz. Solicitar 'sin pan'.",
+                pagamento: "No local - R$ 289,00"
             },
             {
                 data: "27/09 (Sábado)",
@@ -675,13 +696,14 @@
             {
                 data: "30/09 (Terça)",
                 titulo: "Etapa 5: Pola de Allande → Berducedo",
-                descricao: "Subida exigente até Puerto del Palo (1.100m), paisagens montanhosas",
+                descricao: "Subida exigente até Puerto del Palo (1.100m), paisagens montanhosas. Não há disponibilidade de alimentação no caminho - é necessário levar tudo do mercado.",
                 localizacao: "Berducedo, Espanha",
                 endereco: "Albergue Casa Marques (reserva por email)",
                 tipo: "etapa",
                 etapa: 5,
                 distancia: 16,
-                alimentacao: "GF: Refeições sob aviso, tortilhas locais, frutas"
+                alimentacao: "GF: Não há disponibilidade de alimentação no local. É necessário levar tudo do mercado de Pola de Allande.",
+                pagamento: "No local - R$ 224,74"
             },
             {
                 data: "01/10 (Quarta)",
@@ -692,7 +714,8 @@
                 tipo: "etapa",
                 etapa: 6,
                 distancia: 20,
-                alimentacao: "GF: Refeições locais simples; mercado com opções básicas"
+                alimentacao: "GF: Refeições locais simples; mercado com opções básicas",
+                observacao: "Hotel afastado do centro."
             },
             {
                 data: "02/10 (Quinta)",
@@ -725,7 +748,8 @@
                 tipo: "etapa",
                 etapa: 9,
                 distancia: 30,
-                alimentacao: "GF: Restaurante La Oca – GF completo (pizza, pão, sobremesas)"
+                alimentacao: "GF: Restaurante La Oca – GF completo (pizza, pão, sobremesas)",
+                pagamento: "No local - R$ 463,00"
             },
             {
                 data: "05/10 (Domingo)",
@@ -948,6 +972,12 @@
                 if (etapa.alimentacao) {
                     badges += `<span class="badge badge-gf">GF</span>`;
                 }
+                if (etapa.pagamento) {
+                    badges += `<span class="badge badge-payment">Pagamento Local</span>`;
+                }
+                if (etapa.observacao) {
+                    badges += `<span class="badge badge-warning">Observação</span>`;
+                }
                 
                 card.innerHTML = `
                     <div class="card-header">
@@ -965,10 +995,20 @@
                             <i class="fas fa-home"></i>
                             <span>${etapa.endereco}</span>
                         </div>
+                        ${etapa.pagamento ? `
+                        <div class="info-item payment-item">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span><strong>Pagamento:</strong> ${etapa.pagamento}</span>
+                        </div>` : ''}
                         ${etapa.alimentacao ? `
                         <div class="info-item">
                             <i class="fas fa-utensils"></i>
                             <span>${etapa.alimentacao}</span>
+                        </div>` : ''}
+                        ${etapa.observacao ? `
+                        <div class="info-item warning-item">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span><strong>Observação:</strong> ${etapa.observacao}</span>
                         </div>` : ''}
                     </div>
                     <div class="card-footer">
@@ -1285,6 +1325,12 @@
                     if (item.alimentacao) {
                         badges += `<span class="badge badge-gf">GF</span>`;
                     }
+                    if (item.pagamento) {
+                        badges += `<span class="badge badge-payment">Pagamento Local</span>`;
+                    }
+                    if (item.observacao) {
+                        badges += `<span class="badge badge-warning">Observação</span>`;
+                    }
                     
                     let pontosHtml = '';
                     if (item.praias) {
@@ -1315,10 +1361,20 @@
                                 <i class="fas fa-home"></i>
                                 <span>${item.endereco}</span>
                             </div>
+                            ${item.pagamento ? `
+                            <div class="info-item payment-item">
+                                <i class="fas fa-money-bill-wave"></i>
+                                <span><strong>Pagamento:</strong> ${item.pagamento}</span>
+                            </div>` : ''}
                             ${item.alimentacao ? `
                             <div class="info-item">
                                 <i class="fas fa-utensils"></i>
                                 <span>${item.alimentacao}</span>
+                            </div>` : ''}
+                            ${item.observacao ? `
+                            <div class="info-item warning-item">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <span><strong>Observação:</strong> ${item.observacao}</span>
                             </div>` : ''}
                             ${pontosHtml}
                         </div>
